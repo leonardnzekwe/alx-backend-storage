@@ -4,8 +4,6 @@ import redis
 import requests
 from functools import wraps
 
-# Use a constant for expiration time for better readability
-CACHE_EXPIRATION_TIME = 10
 
 # Redis connection
 r = redis.Redis()
@@ -28,8 +26,8 @@ def url_access_count(method):
         html_content = method(url)
 
         r.incr(key_count)
-        r.set(key, html_content, ex=CACHE_EXPIRATION_TIME)
-        r.expire(key, CACHE_EXPIRATION_TIME)
+        r.set(key, html_content, ex=10)
+        r.expire(key, 10)
 
         return html_content
 
@@ -41,8 +39,3 @@ def get_page(url: str) -> str:
     """Obtain the HTML content of a particular URL."""
     results = requests.get(url)
     return results.text
-
-
-if __name__ == "__main__":
-    # Example usage
-    get_page("http://slowwly.robertomurray.co.uk")
