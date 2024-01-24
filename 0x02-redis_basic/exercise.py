@@ -56,6 +56,7 @@ class Cache:
 
         return wrapper
 
+    @count_calls
     @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
